@@ -1,8 +1,10 @@
 package com.notes.notesapp.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.notes.notesapp.model.Note;
+import com.notes.notesapp.service.NoteService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,16 +15,16 @@ import java.util.List;
 @RequestMapping("/notes")
 public class NoteController {
 
-    private List<Note> notes = new ArrayList<>();
+    @Autowired
+    private NoteService service;
 
     @GetMapping
     public List<Note> getNotes() {
-        return notes;
+        return service.getAllNotes();
     }
 
     @PostMapping
     public String addNote(@RequestBody Note note) {
-        notes.add(note);
-        return "Note added successfully!";
+        return service.addNote(note);
     }
 }
