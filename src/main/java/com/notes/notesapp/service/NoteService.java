@@ -21,6 +21,6 @@ public class NoteService {
 
     public String addNote(Note note) {
         repo.save(note);
-        return "Note added successfully!";
+        return "Saved to Oracle DB!";
     }
 }
