@@ -30,6 +30,13 @@ function App() {
       });
   };
 
+  const deleteNote = (id) => {
+    fetch(`http://localhost:8080/notes/${id}`, {
+      method: "DELETE"
+    })
+      .then(() => fetchNotes());
+  };
+
   return (
     <div style={{ padding: "20px" }}>
       <h1>📒 Notes App</h1>
@@ -64,6 +71,10 @@ function App() {
         >
           <h3>{note.title}</h3>
           <p>{note.content}</p>
+
+          <button onClick={() => deleteNote(note.id)}>
+            Delete
+          </button>
         </div>
       ))}
     </div>
