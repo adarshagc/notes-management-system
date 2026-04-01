@@ -17,7 +17,7 @@ function App() {
   const fetchNotes = () => {
     setLoading(true);
 
-    fetch("http://localhost:8080/notes")
+    fetch("https://notes-management-system-1-n10m.onrender.com/notes")
       .then(res => res.json())
       .then(data => {
         setNotes(data);
