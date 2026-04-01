@@ -17,12 +17,21 @@ public class Note {
     //Constructor
     public Note() {}
 
-    public Note(String title, String content) {
+    public Note(Long id, String title, String content) {
+        this.id = id;
         this.title = title;
         this.content = content;
     }
 
     //Getters & Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getTitle() {
         return title;
     }

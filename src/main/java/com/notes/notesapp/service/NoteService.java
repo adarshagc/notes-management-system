@@ -23,4 +23,13 @@ public class NoteService {
         repo.save(note);
         return "Saved to Oracle DB!";
     }
+
+    public String deleteNote(Long id) {
+        if(repo.existsById(id)) {
+            repo.deleteById(id);
+            return "Note deleted successfully!";
+        }else {
+            return "Note not found!";
+        }
+    }
 }
