@@ -10,11 +10,19 @@ function App() {
   }, []);
 
   return (
-    <div>
-      <h1>Notes App</h1>
+    <div style={{ padding: "20px" }}>
+      <h1>📒 Notes App</h1>
 
       {notes.map(note => (
-        <div key={note.id}>
+        <div
+          key={note.id}
+          style={{
+            border: "1px solid gray",
+            margin: "10px",
+            padding: "10px",
+            borderRadius: "8px"
+          }}
+        >
           <h3>{note.title}</h3>
           <p>{note.content}</p>
         </div>
