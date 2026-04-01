@@ -4,6 +4,7 @@ function App() {
   const [notes, setNotes] = useState([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [editingId, setEditingId] = useState(null);
 
   useEffect(() => {
     fetchNotes();
@@ -15,9 +16,15 @@ function App() {
       .then(data => setNotes(data));
   };
 
-  const addNote = () => {
-    fetch("http://localhost:8080/notes", {
-      method: "POST",
+  const saveNote = () => {
+    const url = editingId
+      ? `http://localhost:8080/notes/${editingId}`
+      : "http://localhost:8080/notes";
+
+    const method = editingId ? "PUT" : "POST";
+
+    fetch(url, {
+      method: method,
       headers: {
         "Content-Type": "application/json"
       },
@@ -26,7 +33,8 @@ function App() {
       .then(() => {
         setTitle("");
         setContent("");
-        fetchNotes(); // refresh list
+        setEditingId(null);
+        fetchNotes();
       });
   };
 
@@ -35,6 +43,12 @@ function App() {
       method: "DELETE"
     })
       .then(() => fetchNotes());
+  };
+
+  const handleEdit = (note) => {
+    setTitle(note.title);
+    setContent(note.content);
+    setEditingId(note.id);
   };
 
   return (
@@ -55,7 +69,9 @@ function App() {
           onChange={(e) => setContent(e.target.value)}
         />
         <br /><br />
-        <button onClick={addNote}>Add Note</button>
+        <button onClick={saveNote}>
+          {editingId ? "Update Note" : "Add Note"}
+        </button>
       </div>
 
       {/* NOTES LIST */}
@@ -74,6 +90,9 @@ function App() {
 
           <button onClick={() => deleteNote(note.id)}>
             Delete
+          </button>
+          <button onClick={() => handleEdit(note)}>
+            Edit
           </button>
         </div>
       ))}
