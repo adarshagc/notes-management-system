@@ -1,6 +1,7 @@
 package com.notes.notesapp.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "notes")
@@ -11,7 +12,10 @@ public class Note {
     @SequenceGenerator(name = "note_seq", sequenceName = "note_seq", allocationSize = 1)
     private Long id;
 
+    @NotBlank(message = "Title cannot be empty")
     private String title;
+
+    @NotBlank(message = "Content cannot be empty")
     private String content;
 
     //Constructor

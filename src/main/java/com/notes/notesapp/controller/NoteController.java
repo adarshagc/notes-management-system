@@ -1,5 +1,6 @@
 package com.notes.notesapp.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ public class NoteController {
     }
 
     @PostMapping
-    public String addNote(@RequestBody Note note) {
+    public String addNote(@Valid @RequestBody Note note) {
         return service.addNote(note);
     }
 
@@ -34,7 +35,7 @@ public class NoteController {
     }
 
     @PutMapping("/{id}")
-    public String updateNote(@PathVariable Long id, @RequestBody Note note) {
+    public String updateNote(@PathVariable Long id, @Valid @RequestBody Note note) {
         return service.updateNote(id, note);
     }
 }

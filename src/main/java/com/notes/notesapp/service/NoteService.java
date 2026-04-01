@@ -1,5 +1,6 @@
 package com.notes.notesapp.service;
 
+import com.notes.notesapp.exception.ResourceNotFoundException;
 import com.notes.notesapp.model.Note;
 import com.notes.notesapp.repository.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,21 +26,19 @@ public class NoteService {
     }
 
     public String deleteNote(Long id) {
-        if(repo.existsById(id)) {
-            repo.deleteById(id);
-            return "Note deleted successfully!";
-        }else {
-            return "Note not found!";
+        if(!repo.existsById(id)) {
+            throw new ResourceNotFoundException("Note not found with id " + id);
         }
+        repo.deleteById(id);
+        return "Deleted Successfully!";
     }
 
     public String updateNote(Long id, Note updatedNote) {
-        if(repo.existsById(id)) {
-            updatedNote.setId(id);
-            repo.save(updatedNote);
-            return "Note updated successfully!";
-        }else {
-            return "Note not found!";
+        if(!repo.existsById(id)) {
+            throw new ResourceNotFoundException("Note not found with id " + id);
         }
+        updatedNote.setId(id);
+        repo.save(updatedNote);
+        return "Updated Successfully!";
     }
 }
