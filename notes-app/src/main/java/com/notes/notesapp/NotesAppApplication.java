@@ -3,7 +3,7 @@ package com.notes.notesapp;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.notes.notesapp")
 public class NotesAppApplication {
 
 	public static void main(String[] args) {
