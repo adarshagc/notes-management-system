@@ -32,4 +32,14 @@ public class NoteService {
             return "Note not found!";
         }
     }
+
+    public String updateNote(Long id, Note updatedNote) {
+        if(repo.existsById(id)) {
+            updatedNote.setId(id);
+            repo.save(updatedNote);
+            return "Note updated successfully!";
+        }else {
+            return "Note not found!";
+        }
+    }
 }
