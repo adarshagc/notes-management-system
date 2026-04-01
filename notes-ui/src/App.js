@@ -6,14 +6,24 @@ function App() {
   const [content, setContent] = useState("");
   const [editingId, setEditingId] = useState(null);
 
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     fetchNotes();
   }, []);
 
   const fetchNotes = () => {
+    setLoading(true);
+
     fetch("http://localhost:8080/notes")
       .then(res => res.json())
-      .then(data => setNotes(data));
+      .then(data => {
+        setNotes(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   };
 
   const saveNote = () => {
@@ -30,69 +40,116 @@ function App() {
       },
       body: JSON.stringify({ title, content })
     })
+      .then(async (res) => {
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.message);
+        }
+        return res.json();
+      })
       .then(() => {
+        setSuccess(editingId ? "Note updated!" : "Note added!");
+        setError("");
         setTitle("");
         setContent("");
         setEditingId(null);
         fetchNotes();
+      })
+      .catch(err => {
+        setError(err.message);
+        setSuccess("");
       });
   };
 
   const deleteNote = (id) => {
+    if (!window.confirm("Are you sure you want to delete this note?")) return;
+
     fetch(`http://localhost:8080/notes/${id}`, {
       method: "DELETE"
     })
-      .then(() => fetchNotes());
+      .then(() => {
+        setSuccess("Note deleted!");
+        fetchNotes();
+      });
   };
 
   const handleEdit = (note) => {
     setTitle(note.title);
     setContent(note.content);
     setEditingId(note.id);
+    setSuccess("");
+    setError("");
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>📒 Notes App</h1>
+    <div style={{ maxWidth: "600px", margin: "auto", padding: "20px" }}>
+      <h1 style={{ textAlign: "center" }}>📒 Notes App</h1>
+
+      {/* ERROR / SUCCESS */}
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {success && <p style={{ color: "green" }}>{success}</p>}
 
       {/* FORM */}
       <div style={{ marginBottom: "20px" }}>
         <input
+          style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
           placeholder="Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-        <br /><br />
+
         <textarea
+          style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
           placeholder="Content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
         />
-        <br /><br />
-        <button onClick={saveNote}>
+
+        <button
+          style={{
+            padding: "10px",
+            width: "100%",
+            background: editingId ? "orange" : "blue",
+            color: "white",
+            border: "none",
+            borderRadius: "5px"
+          }}
+          onClick={saveNote}
+        >
           {editingId ? "Update Note" : "Add Note"}
         </button>
       </div>
+
+      {/* LOADING */}
+      {loading && <p>Loading...</p>}
 
       {/* NOTES LIST */}
       {notes.map(note => (
         <div
           key={note.id}
           style={{
-            border: "1px solid gray",
-            margin: "10px",
+            border: "1px solid #ddd",
+            marginBottom: "10px",
             padding: "10px",
-            borderRadius: "8px"
+            borderRadius: "8px",
+            background: "#f9f9f9"
           }}
         >
           <h3>{note.title}</h3>
           <p>{note.content}</p>
 
-          <button onClick={() => deleteNote(note.id)}>
-            Delete
+          <button
+            style={{ marginRight: "10px" }}
+            onClick={() => handleEdit(note)}
+          >
+            ✏️ Edit
           </button>
-          <button onClick={() => handleEdit(note)}>
-            Edit
+
+          <button
+            style={{ background: "red", color: "white" }}
+            onClick={() => deleteNote(note.id)}
+          >
+            ❌ Delete
           </button>
         </div>
       ))}
