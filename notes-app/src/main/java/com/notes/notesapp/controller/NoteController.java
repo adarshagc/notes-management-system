@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/notes")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://notes-management-system.netlify.app")
 public class NoteController {
 
     @Autowired
