@@ -28,8 +28,8 @@ function App() {
 
   const saveNote = () => {
     const url = editingId
-      ? `http://localhost:8080/notes/${editingId}`
-      : "http://localhost:8080/notes";
+      ? `https://notes-management-system-1-n10m.onrender.com/notes/${editingId}`
+      : "https://notes-management-system-1-n10m.onrender.com/notes";
 
     const method = editingId ? "PUT" : "POST";
 
@@ -64,7 +64,7 @@ function App() {
   const deleteNote = (id) => {
     if (!window.confirm("Are you sure you want to delete this note?")) return;
 
-    fetch(`http://localhost:8080/notes/${id}`, {
+    fetch(`https://notes-management-system-1-n10m.onrender.com/notes/${id}`, {
       method: "DELETE"
     })
       .then(() => {
@@ -142,14 +142,14 @@ function App() {
             style={{ marginRight: "10px" }}
             onClick={() => handleEdit(note)}
           >
-            ✏️ Edit
+            Edit
           </button>
 
           <button
             style={{ background: "red", color: "white" }}
             onClick={() => deleteNote(note.id)}
           >
-            ❌ Delete
+            Delete
           </button>
         </div>
       ))}
