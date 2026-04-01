@@ -17,7 +17,7 @@ function App() {
   const fetchNotes = () => {
     setLoading(true);
 
-    fetch("https://notes-management-system-1-n10m.onrender.com/notes")
+    fetch("https://notes-management-system-1-nl0m.onrender.com/notes")
       .then(res => res.json())
       .then(data => {
         setNotes(data);
@@ -28,8 +28,8 @@ function App() {
 
   const saveNote = () => {
     const url = editingId
-      ? `https://notes-management-system-1-n10m.onrender.com/notes/${editingId}`
-      : "https://notes-management-system-1-n10m.onrender.com/notes";
+      ? `https://notes-management-system-1-nl0m.onrender.com/notes/${editingId}`
+      : "https://notes-management-system-1-nl0m.onrender.com/notes";
 
     const method = editingId ? "PUT" : "POST";
 
